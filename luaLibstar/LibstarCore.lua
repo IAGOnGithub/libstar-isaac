@@ -1,7 +1,7 @@
 --[[
     Copyright (c) 2023 IAG
     
-    Simple Targeting Reticle library (libstar) Core edition, v0.2.0
+    Simple Targeting Reticle library (libstar) Core edition, v0.2.1
     For your convenience, a copy of libstar's license is included at the bottom
     of this file. You may therefore omit the license file when using this library.
 ]]--
@@ -98,9 +98,6 @@ function star:TrySpawn(player)
 end
 
 function star:Despawn()
-    -- Setting the entity to nil caused the move function to throw an error when the entity
-    -- was removed as it was trying to interact with a nil value.
-    -- Why it happily works when the entity does not even exist is beyond me.
     self.reticle.entity:Remove()
     star:Reset()
     self.reticle.timers.cooldown = self.config.firing.fireGap
@@ -221,7 +218,6 @@ function star:OnPostUpdate()
     if not self.reticle.states.armed and
            self.reticle.timers.fromSpawn >= self.config.firing.disarmedUntil then
         self.reticle.states.armed = true
-        print("armed")
 
     end
     -- Trigger firing
@@ -229,7 +225,6 @@ function star:OnPostUpdate()
                                      self.config.firing.fireAt then
         self.reticle.states.firing = true
         self.config.firing.onTrigger(self)
-        print("firing")
     end
 end
 
